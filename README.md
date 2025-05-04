@@ -1,62 +1,101 @@
-# intune
-🎸🎸
+# InTune - Guitar Utility App
 
-<img src="https://www.dropbox.com/scl/fi/4e8z2s7pau4fuwrkdsube/intune.jpg?rlkey=oukxjfpb1ysxyw08hhiusvijp&raw=1" alt="Example Image" width="500" height="900">
+<img src="https://www.dropbox.com/scl/fi/xbw45n5r2zk53coqq0dz7/intune.jpg?rlkey=bzyfng9uvc9bc5fugr2mhzj4j&raw=1" alt="InTune App Screenshot" width="500" height="900">
 
+## Overview
 
-# Description 🖊️
-A simple guitar tuning application built using flutter with support for 
-- Android
-- iOS
+InTune is a comprehensive guitar utility application built with Flutter, designed to help guitarists tune their instruments, practice with a metronome, learn chord shapes, and explore songs with tablature. With a clean, intuitive interface and professional features, InTune serves as an all-in-one toolkit for guitarists of all skill levels.
 
-The application can be accessed through:
-- Android - https://dennis-tomno.onrender.com/intune-release.apk
-- iOS - Coming Soon!
+## Platforms
 
-# UI 🎨
-The app's UI is currently simple with flutter's dark mode theme being used
-as the app's main color together with shades of amber, white, green and red.
-The tuner's UI can be improved in future to show a guitar image that auto picks the strings
-based on tuning. Other UI aspects can also be improved but for now it is good enough.
+- ✅ Android
+- 🔜 iOS (Coming Soon)
 
-Not the best designer but i try 😂. Maybe I can collab with a designer to improve it 
+## Download
 
-# Functionality ✨
-- Tuner : 12 different tunings
-- Metronome : tempo between 30 and 240 BPM
-- Chord Library : Chords shapes of 9 different chord types
+- [Android APK](https://dennis-tomno.onrender.com/intune-release.apk) - Coming soon to Play Store
+- iOS: Coming Soon to App Store
 
-# Future Features To add 📔
-- Songs to play along with sync
+## Features
 
-# Dependencies 
-This app makes use of some important packages that power the tuning, chord library and metronome functionalities:
+### 🎸 Guitar Tuner
+- Precision pitch detection
+- 12 different tuning options:
+  - Standard
+  - Drop D
+  - Drop A
+  - Half step down
+  - Open C/D/F/G
+  - Bass (4, 5, and 6 string)
+- Visual tuning indicator
+- Audio feedback
 
-1. Tuning
-- waveform_fft to record sound/audio 
-- pitchupdart and pitch_detector_dart to detect the pitch of the recorded sound and check whether it is in tune
+### ⏱️ Metronome
+- Tempo range from 30 to 240 BPM
+- Visual beat indication
+- First beat emphasis
+- Adjustable beat count
 
-2. Chord Library
-- carousel_slider provides a way to slide between the chord library images horizontally
+### 📚 Chord Library
+- 9 different chord types with multiple variations
+- Clear chord diagrams
+- Finger positioning guides
+- Swipeable interface with carousel navigation
 
-3. Metronome
-- just_audio package facilitates load the metronome audio sample, setting the tempo (with some calibration first) and play/loop the sample at the tempo speed upto a certain number of beats
+### 🎵 Song Explorer
+- Search for songs by title or artist
+- View tablature for popular songs
+- Download and play Guitar Pro files (.gp4, .gp5)
+- Text-based tablature display
 
-# Links to these helpful packages:
-1. pitchupdart 
-- https://pub.dev/packages/pitchupdart
+### 🎨 User Interface
+- Modern, clean design
+- Dark and light theme options
+- System theme integration
+- Responsive layout for different screen sizes
 
-2. pitch_detector_dart 
-- https://pub.dev/packages/pitch_detector_dart
+## Technical Implementation
 
-3. waveform_fft
-- https://pub.dev/packages/waveform_fft
+InTune leverages several specialized packages to deliver its functionality:
 
-4. carousel_slider 
-- https://pub.dev/packages/carousel_slider
+- **Guitar Tuning**: Utilizes `pitch_detector_dart` and `flutter_voice_processor` for accurate real-time pitch detection
+- **Chord Library**: Implements `carousel_slider` for smooth navigation between chord diagrams
+- **Metronome**: Powered by `metronome` for precise timing and beat control
+- **Song Explorer**: Features custom tab rendering and file management with `path_provider` and `url_launcher`
 
-5. just_audio 
-- https://pub.dev/packages/just_audio
+## Development
 
-This project help me learn a lot more about flutter. If you find this helpful feel 
-free to contact me (deni.tomno@gmail.com) to collaborate on this or other projects
+### Setup
+```bash
+# Clone repository
+git clone https://github.com/yourusername/intune.git
+
+# Run setup.bat(windows)
+setup.bat
+# Or setup.sh(linux) 
+setup.sh
+
+# Run the app
+flutter run
+```
+
+## Future Roadmap
+
+- Expanded chord library with advanced variations
+- Interactive guitar lessons
+- Custom backing track generator
+- Chord progression builder
+- Audio recording and playback features
+
+## Contact
+
+For collaboration or inquiries, please contact:
+- Email: deni.tomno@gmail.com
+- GitHub: [Your GitHub Profile]
+
+## License
+
+## License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
+

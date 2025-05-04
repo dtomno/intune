@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intune/code/bindings/dependencies.dart';
 import 'package:intune/code/controllers/theme/app_themes.dart';
 import 'package:intune/code/controllers/theme/theme_controller.dart';
+import 'package:intune/navigation_observer.dart';
 import 'package:intune/views/home.dart';
 
 import 'code/controllers/home.dart';
@@ -14,12 +15,12 @@ void main() {
       .then((value) {
     Get.put(HomeController());
     Get.put(ThemeController());
-    runApp(const MyApp());
+    runApp(MyApp());
   });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         theme: AppThemes.getLightTheme(),
         darkTheme: AppThemes.getDarkTheme(),
         home: const Home(),
+        navigatorObservers: [routeObserver],
       ),
     );
   }

@@ -176,8 +176,9 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                       value: _metroController.tempo.value,
                       onChanged: (value) {
                         _metroController.tempo.value = value.round().toDouble();
-                        _metroController.updateMetro(_metroController.tempo);
                       },
+                      onChangeEnd: (value) => 
+                          _metroController.updateTempo(value.round().toDouble()),
                       max: 240.0,
                       min: 40.0,
                       activeColor: mainColor,
@@ -238,7 +239,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                 final isActive = isCurrentBeat && _metroController.play.value;
                 
                 return AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 0),
                   curve: Curves.easeInOut,
                   height: 20,
                   width: 20,
@@ -255,7 +256,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                             BoxShadow(
                               color: (isFirstBeat 
                                 ? AppThemes.getSuccessColor(isDark) 
-                                : mainColor).withOpacity(0.5),
+                                : mainColor),
                               blurRadius: 10,
                               spreadRadius: 2,
                             ),
@@ -382,36 +383,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                       ? AppThemes.getErrorColor()
                       : AppThemes.getSuccessColor(isDark),
                 )),
-          ),
-          
-          // Sound loading indicator
-          Obx(() => !_metroController.soundLoaded.value 
-            ? Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: 16, 
-                      height: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: AppThemes.getTextColor(isDark),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Loading sounds...',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppThemes.getTextColor(isDark).withOpacity(0.7),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : const SizedBox.shrink(),
-          ),
+          ),          
         ],
       ),
     );
@@ -449,7 +421,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
     final newTempo = _metroController.tempo.value + delta;
     if (newTempo >= 40 && newTempo <= 240) {
       _metroController.tempo.value = newTempo;
-      _metroController.updateMetro(_metroController.tempo);
+      _metroController.updateTempo(_metroController.tempo.value);
     }
   }
   

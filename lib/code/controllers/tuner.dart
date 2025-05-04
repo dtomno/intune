@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intune/code/controllers/settings_controller.dart';
 import 'package:intune/code/controllers/theme/app_themes.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
 import 'package:pitchupdart/instrument_type.dart';
@@ -12,13 +13,15 @@ import 'package:permission_handler/permission_handler.dart';
 
 class TunerController extends GetxController {
   // Audio processing constants - optimized for guitar pitch detection
-  static const int sampleRate = 44100;
+  static const int sampleRate = 16000;
   // Smaller frame length for more responsive pitch detection (like Guitar Tuna)
   static const int frameLength = 2048; // Reduced from 4096 for faster response time
 
+  final _settingsController = Get.find<SettingsController>();
+
   final _audioCapture = VoiceProcessor.instance;
   // Match the PitchDetector sample rate with the audio capture
-  final _pitchDetector = PitchDetector(audioSampleRate: sampleRate.toDouble());
+  final _pitchDetector = PitchDetector(audioSampleRate: sampleRate.toDouble(), bufferSize: frameLength);
   final _pitchHandler = PitchHandler(InstrumentType.guitar);
 
   // Observable values
@@ -39,7 +42,7 @@ class TunerController extends GetxController {
   RxDouble signalStrength = 0.0.obs; // 0.0 to 1.0
 
   // Improved sensitivity for pitch detection
-  final double silenceThreshold = 0.05;
+  late final double silenceThreshold; // 0.1 to 1.0
 
   // Time-based update limits to prevent UI flicker
   int _lastUpdateTime = 0;
@@ -69,6 +72,7 @@ class TunerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    silenceThreshold = _settingsController.settings.value.silenceThreshold.toDouble();
     frameListener = (buffer) => _processPitchData(buffer);
     _audioCapture?.addFrameListener(frameListener);
 

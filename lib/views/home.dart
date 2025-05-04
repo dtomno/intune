@@ -6,6 +6,7 @@ import 'package:intune/code/controllers/theme/app_themes.dart';
 import 'package:intune/code/controllers/theme/theme_controller.dart';
 import 'package:intune/code/controllers/tuner.dart';
 import 'package:intune/views/about.dart';
+import 'package:intune/views/settings_view.dart';
 import 'package:intune/views/songs/song_search_view.dart';
 import 'package:intune/views/tools/tools_home.dart';
 import 'package:intune/views/tuner/tuner.dart';
@@ -93,10 +94,22 @@ class _HomeState extends State<Home> {
                         duration: const Duration(seconds: 2),
                       ),
                     );
+                  } else if (value == 2) {
+                    Get.to(const SettingsView());
                   }
                 },
                 itemBuilder: (context) {
                   return [
+                    PopupMenuItem<int>(
+                      value: 2,
+                      child: Row(
+                        children: [
+                          Icon(Icons.settings, color: AppThemes.getTextColor(isDark)),
+                          const SizedBox(width: 8),
+                          Text("Settings"),
+                        ],
+                      ),
+                    ),
                     PopupMenuItem<int>(
                       value: 0,
                       child: Row(
@@ -144,7 +157,10 @@ class _HomeState extends State<Home> {
                 unselectedItemColor: isDark ? Colors.grey : Colors.grey.shade700,
                 backgroundColor: AppThemes.getCardColor(isDark), // Using theme-consistent card color
                 currentIndex: _homeController.selectedIndex.value,
-                onTap: (index) => _homeController.selectedIndex.value = index,
+                onTap: (index) {
+                  index != 0 ? _tunerController.stopAudio() : _tunerController.recordAudio();
+                  _homeController.selectedIndex.value = index;
+                },
                 items: [
                   BottomNavigationBarItem(
                     icon: const Icon(FontAwesomeIcons.guitar),
