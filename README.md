@@ -91,7 +91,7 @@ flutter run
 
 For collaboration or inquiries, please contact:
 - Email: deni.tomno@gmail.com
-- GitHub: [Your GitHub Profile]
+- GitHub: (https://github.com/dtomno)
 
 ## License
 
