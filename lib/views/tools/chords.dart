@@ -49,6 +49,7 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
     final cardColor = AppThemes.getCardColor(isDark);
     final backgroundColor = AppThemes.getBackgroundColor(isDark);
     final size = MediaQuery.of(context).size;
+    CarouselSliderController resetController = CarouselSliderController();
     
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -162,6 +163,7 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
                                           _chordController.chordType.value,
                                         );
                                         _chordController.currentIndex.value = 0; // Reset index to first image
+                                        resetController.jumpToPage(0); // Reset carousel to first image
                                       }
                                     },
                                   ),
@@ -200,6 +202,7 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
                                           _chordController.chordType.value,
                                         );
                                         _chordController.currentIndex.value = 0;
+                                        resetController.jumpToPage(0); // Reset carousel to first image
                                       }
                                     },
                                   ),
@@ -292,6 +295,7 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
                                 },
                               );
                             }).toList(),
+                            carouselController: resetController,
                             options: CarouselOptions(
                               initialPage: _chordController.currentIndex.value,
                               onPageChanged: (index, reason) {

@@ -36,7 +36,7 @@ class SettingsController extends GetxController {
         settings.value = SettingsModel.fromJson(settingsMap);
       }
     } catch (e) {
-      print('Error loading settings: $e');
+      // print('Error loading settings: $e');
     }
   }
   
@@ -47,7 +47,7 @@ class SettingsController extends GetxController {
       final String settingsJson = jsonEncode(settings.value.toJson());
       await prefs.setString('app_settings', settingsJson);
     } catch (e) {
-      print('Error saving settings: $e');
+      // print('Error saving settings: $e');
     }
   }
   

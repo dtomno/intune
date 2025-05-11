@@ -33,7 +33,7 @@ class TabService {
         onReceiveProgress: (received, total) {
           // You could expose this progress via a callback or stream
           if (total != -1) {
-            print('${(received / total * 100).toStringAsFixed(0)}%');
+            // print('${(received / total * 100).toStringAsFixed(0)}%');
           }
         },
       );

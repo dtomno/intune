@@ -28,7 +28,7 @@ class SongController extends GetxController {
       final searches = await _repository.getRecentSearches();
       recentSearches.value = searches;
     } catch (e) {
-      print('Failed to load recent searches: $e');
+      // print('Failed to load recent searches: $e');
     }
   }
   

@@ -56,7 +56,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
     if (_metroController.play.value) {
       _metroController.stop();
     }
-    _tunerController.recordAudio();
+    // _tunerController.recordAudio();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
