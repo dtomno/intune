@@ -7,7 +7,7 @@ import 'package:intune/code/controllers/theme/theme_controller.dart';
 import 'package:intune/code/controllers/tuner.dart';
 import 'package:intune/views/about.dart';
 import 'package:intune/views/settings_view.dart';
-import 'package:intune/views/songs/song_search_view.dart';
+// import 'package:intune/views/songs/song_search_view.dart';
 import 'package:intune/views/tools/tools_home.dart';
 import 'package:intune/views/tuner/tuner.dart';
 
@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   // Define a list of widget builder functions instead of direct widget instances
   final List<Widget Function()> _pageBuilders = [
     () => tuner(),
-    () => songSearch(),
+    // () => songSearch(),
     () => tools()
   ];
 
@@ -177,21 +177,21 @@ class _HomeState extends State<Home> {
                     ),
                     label: 'Tune',
                   ),
-                  BottomNavigationBarItem(
-                    icon: const Icon(Icons.music_note),
-                    activeIcon: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppThemes.getMainColor(isDark).withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        Icons.music_note,
-                        color: AppThemes.getMainColor(isDark),
-                      ),
-                    ),
-                    label: 'Songs',
-                  ),
+                  // BottomNavigationBarItem(
+                  //   icon: const Icon(Icons.music_note),
+                  //   activeIcon: Container(
+                  //     padding: const EdgeInsets.all(10),
+                  //     decoration: BoxDecoration(
+                  //       color: AppThemes.getMainColor(isDark).withOpacity(0.2),
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //     child: Icon(
+                  //       Icons.music_note,
+                  //       color: AppThemes.getMainColor(isDark),
+                  //     ),
+                  //   ),
+                  //   label: 'Songs',
+                  // ),
                   BottomNavigationBarItem(
                     icon: const Icon(Icons.tune),
                     activeIcon: Container(
