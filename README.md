@@ -13,7 +13,7 @@ InTune is a comprehensive guitar utility application built with Flutter, designe
 
 ## Download
 
-- [Android APK](https://dennis-tomno.onrender.com/intune-release.apk) - Coming soon to Play Store
+- [Android APK](https://dennis-tomno.onrender.com/intune.apk) - Coming soon to Play Store
 - iOS: Coming Soon to App Store
 
 ## Features
