@@ -9,6 +9,8 @@ class SongDetailView extends StatelessWidget {
   final SongController _songController = Get.find<SongController>();
   final ThemeController _themeController = Get.find<ThemeController>();
   final TabService _tabService = TabService();
+
+  SongDetailView({super.key});
   
   @override
   Widget build(BuildContext context) {

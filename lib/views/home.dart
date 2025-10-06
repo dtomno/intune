@@ -78,17 +78,17 @@ class _HomeState extends State<Home> {
                         content: Text(
                           'Using system theme',
                           style: TextStyle(
-                            color: AppThemes.getTextColor(isDark),
+                            color: AppThemes.getTextColor(!isDark),
                           ),
                         ),
-                        backgroundColor: AppThemes.getCardColor(isDark),
+                        backgroundColor: AppThemes.getCardColor(!isDark),
                         behavior: SnackBarBehavior.floating,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         action: SnackBarAction(
                           label: 'OK',
-                          textColor: AppThemes.getTextColor(isDark),
+                          textColor: AppThemes.getTextColor(!isDark),
                           onPressed: () {},
                         ),
                         duration: const Duration(seconds: 2),

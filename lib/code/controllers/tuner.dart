@@ -222,12 +222,16 @@ class TunerController extends GetxController {
             .toString()
             .replaceFirst('TuningStatus.', '');
 
-        // Calculate tuning accuracy for UI - using a more intuitive scale (cents)
-        // Convert frequency difference to cents for more intuitive display
-        // A cent is 1/100 of a semitone
-        double cents = 1200 * (diff.value / frequency.value) * math.log(2);
-        tuningAccuracy.value =
-            (cents / 50.0).clamp(-1.0, 1.0); // Normalize to -1.0 to 1.0
+        // Calculate tuning accuracy for UI - using cents (1/100 of a semitone)
+        // Formula: cents = 1200 * log₂(actual_freq / target_freq)
+        // Using math.log(ratio) / math.log(2) to calculate log₂
+        double cents = 0.0;
+        if (frequency.value > 0) {
+          double frequencyRatio = actualFrequency.value / frequency.value;
+          cents = 1200 * (math.log(frequencyRatio) / math.log(2));
+        }
+        // Normalize to -1.0 to 1.0 range (±50 cents = ±1.0)
+        tuningAccuracy.value = (cents / 50.0).clamp(-1.0, 1.0);
 
         // Process tuning notes based on selected tuning
         _processTuningNotes();
@@ -242,7 +246,7 @@ class TunerController extends GetxController {
         }
       }
     } catch (e) {
-      print("Error processing audio: $e");
+      // print("Error processing audio: $e");
     }
   }
 
@@ -622,6 +626,6 @@ class TunerController extends GetxController {
   }
 
   void onError(e) {
-    print("Error in tuner: $e");
+    // print("Error in tuner: $e");
   }
 }

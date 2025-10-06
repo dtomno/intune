@@ -236,7 +236,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 80,
                         width: double.infinity,
                         child: Stack(
@@ -251,14 +251,13 @@ class _TunerState extends State<TunerView> with RouteAware {
                               final isDetectingPitch = _tunerController.isDetectingPitch.value;
                               final accuracy = _tunerController.tuningAccuracy.value;
                               final isInTune = accuracy.abs() < 0.2;
-                              final deviation = _tunerController.diff.value;
 
-                              // Calculate horizontal offset based on pitch deviation
-                              // Map the deviation range to pixel offset (-30 to 30 pixels)
-                              // Limit the maximum movement to keep it visible
-                              double maxOffset = 160.0;
-                              double offsetX = deviation * 10.0; // Scale factor to control sensitivity
-                              offsetX = offsetX.clamp(-maxOffset, maxOffset);
+                              // Calculate horizontal offset based on tuning accuracy (in cents)
+                              // tuningAccuracy ranges from -1.0 to 1.0 (±50 cents)
+                              // Map this to pixel offset for visual feedback
+                              double maxOffset = 100.0;
+                              double offsetX = accuracy * maxOffset; // Direct mapping since accuracy is already normalized
+                              // No need to clamp since accuracy is already clamped to -1.0 to 1.0
 
                               Color noteColorAny = AppThemes.getTextColor(isDarkMode);
                               if (note.isEmpty) {
@@ -326,24 +325,22 @@ class _TunerState extends State<TunerView> with RouteAware {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Obx(() => !_tunerController.isDetectingPitch.value && _tunerController.tuningNotes.isEmpty
-                          ? Container(
-                              child: AnimatedOpacity(
-                                opacity: _tunerController.isDetectingPitch.value ? 0.0 : 1.0,
-                                duration: Duration(milliseconds: 300),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    color: isDarkMode ? Colors.grey[850] : Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    'Start tuning by playing any string',
-                                    style: TextStyle(color: AppThemes.getTextColor(isDarkMode), fontSize: 12),
-                                  ),
-                                ),
+                      Obx(() => _tunerController.isDetectingPitch.value && _tunerController.tuningNotes.isEmpty
+                          ? AnimatedOpacity(
+                            opacity: _tunerController.isDetectingPitch.value ? 0.0 : 1.0,
+                            duration: Duration(milliseconds: 300),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: isDarkMode ? Colors.grey[850] : Colors.grey[200],
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                            )
+                              child: Text(
+                                'Start tuning by playing any string',
+                                style: TextStyle(color: AppThemes.getTextColor(isDarkMode), fontSize: 12),
+                              ),
+                            ),
+                          )
                           : Container(
                               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                               decoration: BoxDecoration(
@@ -351,7 +348,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                _tunerController.tuningNotes.isNotEmpty
+                                !_tunerController.tuningNotes.isNotEmpty
                                     ? '${_tunerController.status.value} ${_tunerController.diff.value.round()}'
                                     : '',
                                 style: TextStyle(color: AppThemes.getTextColor(isDarkMode), fontSize: 12),
@@ -364,7 +361,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                     child: Column(
                   children: [
                     Expanded(
-                      child: Container(
+                      child: SizedBox(
                         width: double.infinity,
                         child: LayoutBuilder(
                           builder: (context, constraints) {
@@ -403,124 +400,28 @@ class _TunerState extends State<TunerView> with RouteAware {
 
                                           RenderBox? box = imageKey.currentContext?.findRenderObject() as RenderBox?;
                                           if (box != null && box.hasSize) {
-                                            final Offset position = box.localToGlobal(Offset.zero);
-                                            final Size size = box.size;
-
-                                            final Rect imageRect = Rect.fromLTWH(position.dx, position.dy, size.width, size.height);
-                                            final Size screenSize = MediaQuery.of(context).size;
-                                            final Rect screenRect = Offset.zero & screenSize;
-                                            final Rect visibleRect = imageRect.intersect(screenRect);
-
-                                            double numberOfScales = (imageScaleFactor - 1.0) * 10;
-
-                                            double relativeX = (imageScaleFactor) *
-                                                ((getStringPositionOnHeadstock(index).dx * visibleRect.width) / imageWidth);
-                                            double relativeY = (imageScaleFactor) *
-                                                ((getStringPositionOnHeadstock(index).dy * visibleRect.height) / imageHeight);
+                                            final Size imageDisplaySize = box.size;
                                             
-                                            if(_tunerController.tuning.value == 'Bass (4 string)') {
-                                              if(index <= 1){
-                                                return Positioned(
-                                                  right: relativeX.roundToDouble() - ((numberOfScales + (0.4 * numberOfScales)) * 10),
-                                                  bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                  child: _buildNoteCircle(
-                                                    note,
-                                                    isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                    isDarkMode: isDarkMode,
-                                                  ),
-                                                );
-                                              } else {
-                                                return Positioned(
-                                                  left: relativeX.roundToDouble() - ((numberOfScales + (0.4 * numberOfScales)) * 10),
-                                                  bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                  child: _buildNoteCircle(
-                                                    note,
-                                                    isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                    isDarkMode: isDarkMode,
-                                                  ),
-                                                );
-                                              }
-                                            } else if(_tunerController.tuning.value == 'Bass (5 string)') {
-                                              if(index <= 3){
-                                                return Positioned(
-                                                  right: relativeX.roundToDouble() - ((numberOfScales + (0.6 * numberOfScales)) * 10),
-                                                  bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                  child: _buildNoteCircle(
-                                                    note,
-                                                    isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                    isDarkMode: isDarkMode,
-                                                  ),
-                                                );
-                                              } else {
-                                                return Positioned(
-                                                  left: relativeX.roundToDouble() - ((numberOfScales + (0.6 * numberOfScales)) * 10),
-                                                  bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                  child: _buildNoteCircle(
-                                                    note,
-                                                    isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                    isDarkMode: isDarkMode,
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                            else if(_tunerController.tuning.value == 'Bass (6 string)') {
-                                              if(index <= 2){
-                                                return Positioned(
-                                                  right: relativeX.roundToDouble() - ((numberOfScales + (0.7 * numberOfScales)) * 10),
-                                                  bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                  child: _buildNoteCircle(
-                                                    note,
-                                                    isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                    isDarkMode: isDarkMode,
-                                                  ),
-                                                );
-                                              } else {
-                                                return Positioned(
-                                                  left: relativeX.roundToDouble() - ((numberOfScales + (0.7 * numberOfScales)) * 10),
-                                                  bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                  child: _buildNoteCircle(
-                                                    note,
-                                                    isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                    isDarkMode: isDarkMode,
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                            else {
-                                              if(_settingsController.settings.value.guitarType == 'electric') {
-                                                return Positioned(
-                                                  left: relativeX.roundToDouble() - ((numberOfScales + (0.4 * numberOfScales)) * 10),
-                                                  bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                  child: _buildNoteCircle(
-                                                    note,
-                                                    isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                    isDarkMode: isDarkMode,
-                                                  ),
-                                                );
-                                              } else {
-                                                if (index <= 2) {
-                                                  return Positioned(
-                                                    right: relativeX.roundToDouble(),
-                                                    bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                    child: _buildNoteCircle(
-                                                      note,
-                                                      isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                      isDarkMode: isDarkMode,
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return Positioned(
-                                                    left: relativeX.roundToDouble(),
-                                                    bottom: relativeY.roundToDouble() - ((numberOfScales + (0.5 * numberOfScales)) * 10),
-                                                    child: _buildNoteCircle(
-                                                      note,
-                                                      isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                      isDarkMode: isDarkMode,
-                                                    ),
-                                                  );
-                                                }
-                                              }
-                                            }
+                                            // Get the relative position from the headstock function (0-1 range)
+                                            final Offset relativePosition = getStringPositionOnHeadstock(index);
+                                            
+                                            // Convert relative position to actual pixel position on the displayed image
+                                            double actualX = (relativePosition.dx / imageWidth) * imageDisplaySize.width;
+                                            double actualY = (relativePosition.dy / imageHeight) * imageDisplaySize.height;
+                                            
+                                            // Center the circle on the calculated position
+                                            double centerX = actualX - 20; // Half of circle width (40/2)
+                                            double centerY = imageDisplaySize.height - actualY - 20; // Half of circle height (40/2), flip Y coordinate
+
+                                            return Positioned(
+                                              left: centerX,
+                                              top: centerY,
+                                              child: _buildNoteCircle(
+                                                note,
+                                                isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
+                                                isDarkMode: isDarkMode,
+                                              ),
+                                            );
                                           }
 
                                           return const SizedBox(); // Fallback if box is null
@@ -564,91 +465,95 @@ Color getColorBasedOnTuningStatus(String status, bool isDarkMode) {
 }
 
 Offset getStringPositionOnHeadstockBass4(int index) {
+  // Return relative positions (0.0 to 1.0) based on original image dimensions
+  // Assuming original image width: ~2000px, height: ~2000px (adjust as needed)
   switch (index) {
     case 0:
-      return Offset(240, 800); // Low E string (lowest)
+      return Offset(200, 900); // Low E string (lowest)
     case 1:
-      return Offset(240, 1200); // A string (second lowest)
+      return Offset(200, 1350); // A string (second lowest)
     case 2:
-      return Offset(240, 1200); // D string (middle-lower)
+      return Offset(2050, 1350); // D string (middle-lower)
     case 3:
-      return Offset(240, 800); // G string (middle-upper)
+      return Offset(2050, 900); // G string (middle-upper)
     default:
       return Offset(0, 0);
   }
 }
 
 Offset getStringPositionOnHeadstockBass5(int index) {
+  // Return relative positions (0.0 to 1.0) based on original image dimensions
   switch (index) {
     case 0:
-      return Offset(1320, 450); // Low B string (lowest)
+      return Offset(300, 470); // Low B string (lowest)
     case 1:
-      return Offset(1280, 690); // E string (second lowest)
+      return Offset(350, 750); // E string (second lowest)
     case 2:
-      return Offset(1230, 930); // A string (middle-lower)
+      return Offset(400, 1030); // A string (middle-lower)
     case 3:
-      return Offset(1180, 1180); // D string (middle-upper)
+      return Offset(480, 1340); // D string (middle-upper)
     case 4:
-      return Offset(1390, 630); // G string (second highest)
+      return Offset(1600, 650); // G string (second highest)
     default:
       return Offset(0, 0);
   }
 }
 
 Offset getStringPositionOnHeadstockBass6(int index) {
+  // Return relative positions (0.0 to 1.0) based on original image dimensions
   switch (index) {
     case 0:
-      return Offset(1080, 380); // Low B string (lowest)
+      return Offset(120, 400); // Low B string (lowest)
     case 1:
-      return Offset(1040, 560); // E string (second lowest)
+      return Offset(170, 620); // E string (second lowest)
     case 2:
-      return Offset(990, 760); // A string (middle-lower)
+      return Offset(200, 840); // A string (middle-lower)
     case 3:
-      return Offset(970, 720); // D string (middle-upper)
+      return Offset(1150, 800); // D string (middle-upper)
     case 4:
-      return Offset(1030, 540); // G string (second highest)
+      return Offset(1200, 540); // G string (second highest)
     case 5:
-      return Offset(1080, 340); // C string (highest)
+      return Offset(1250, 320); // C string (highest)
     default:
       return Offset(0, 0);
   }
 }
 
 Offset getStringPositionOnHeadstockElectric(int index) {
-  // Return more accurate positions for each string based on the string index (0-5)
+  // Return relative positions (0.0 to 1.0) for electric guitar headstock
   switch (index) {
     case 0:
-      return Offset(300, 500); // Low E string (lowest)
+      return Offset(350, 530); // Low E string (lowest)
     case 1:
-      return Offset(344, 650); // A string (second lowest)
+      return Offset(400, 730); // A string (second lowest)
     case 2:
-      return Offset(394, 810); // D string (middle-lower)
+      return Offset(450, 900); // D string (middle-lower)
     case 3:
-      return Offset(444, 960); // G string (middle-upper)
+      return Offset(500, 1080); // G string (middle-upper)
     case 4:
-      return Offset(504, 1110); // B string (second highest)
+      return Offset(550, 1260); // B string (second highest)
     case 5:
-      return Offset(554, 1250); // High E string (highest)
+      return Offset(600, 1430); // High E string (highest)
     default:
       return Offset(0, 0);
   }
 }
 
 Offset getStringPositionOnHeadstockNormal(int index) {
-  // Return more accurate positions for each string based on the string index (0-5)
+  // Return relative positions (0.0 to 1.0) for acoustic guitar headstock
   switch (index) {
     case 0:
-      return Offset(1700, 640); // Low E string (lowest)
+      return Offset(350, 450); // Low E string (lowest)
     case 1:
-      return Offset(1700, 990); // A string (second lowest)
+      return Offset(350, 850); // A string (second lowest)
     case 2:
-      return Offset(1700, 1310); // D string (middle-lower)
+      return Offset(350, 1250); // D string (middle-lower)
     case 3:
-      return Offset(1710, 1300); // G string (middle-upper)
+      return Offset(1950, 1250); // G string (middle-upper)
     case 4:
-      return Offset(1710, 960); // B string (second highest)
+      return Offset(1950, 850); // B string (second highest)
     case 5:
-      return Offset(1710, 620); // High E string (highest)
+      return Offset(1950, 450); // High E string (highest)
     default:
       return Offset(0, 0);
   }
@@ -742,10 +647,10 @@ class _GridBackgroundPainter extends CustomPainter {
     );
 
     // Draw grid lines
-    for (int i = -8; i <= 8; i++) {
+    for (int i = -5; i <= 5; i++) {
       if (i == 0) continue; // Skip center line as we've already drawn it
 
-      final x = centerX + (i * 20.0); // 20px spacing between grid lines
+      final x = centerX + (i * 40.0); // 40px spacing between grid lines
 
       // Draw vertical grid lines
       canvas.drawLine(
@@ -755,11 +660,11 @@ class _GridBackgroundPainter extends CustomPainter {
       );
 
       // Add small tick marks at the top
-      final tickHeight = i % 2 == 0 ? 15.0 : 10.0;
+      final tickHeight = i % 2 == 0 ? 20.0 : 15.0;
       canvas.drawLine(
         Offset(x, 0),
         Offset(x, tickHeight),
-        gridPaint..strokeWidth = i % 2 == 0 ? 1.5 : 1.0,
+        gridPaint..strokeWidth = i % 2 == 0 ? 2.0 : 1.5,
       );
     }
   }

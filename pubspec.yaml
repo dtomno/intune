@@ -65,18 +65,53 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
-flutter_icons:
-  image_path: "images/logos.png"
+flutter_launcher_icons:
   android: true
   ios: true
+  image_path: "images/logos.png"
+  remove_alpha_ios: true # Remove alpha channel for iOS App Store compliance
+  
+  # Platform-specific configurations
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "images/logos.png"
+    background_color: "#1e1e1e"
+    theme_color: "#1e1e1e"
+  windows:
+    generate: true
+    image_path: "images/logos.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "images/logos.png"
 
 flutter_native_splash:
+  # Background color for the splash screen (dark theme to match your app)
   color: "#1e1e1e"
+  color_dark: "#1e1e1e"
+  
+  # Main splash screen image (centered)
   image: "images/logos.png"
-  android_12:
-    image: "images/logos.png"
+  image_dark: "images/logos.png"
+  
+  # Platform-specific configurations
   android: true
   ios: true
+  web: true
+  
+  # Android 12+ specific configuration
+  android_12:
+    image: "images/logos.png"
+    icon_background_color: "#1e1e1e"
+    icon_background_color_dark: "#1e1e1e"
+  
+  # Image positioning
+  android_gravity: center
+  ios_content_mode: center
+  
+  # Full screen splash (remove status bar)
+  fullscreen: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

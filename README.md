@@ -1,10 +1,10 @@
 # InTune - Guitar Utility App
 
-<img src="https://www.dropbox.com/scl/fi/xbw45n5r2zk53coqq0dz7/intune.jpg?rlkey=bzyfng9uvc9bc5fugr2mhzj4j&raw=1" alt="InTune App Screenshot" width="500" height="900">
+<img src="https://www.dropbox.com/scl/fi/otz9zqycdy0oa432ulnwa/intune.jpg?rlkey=kr6mncn5b6b6blmhcnwakdhys&raw=1" alt="InTune App Screenshot" width="500" height="900">
 
 ## Overview
 
-InTune is a comprehensive guitar utility application built with Flutter, designed to help guitarists tune their instruments, practice with a metronome, learn chord shapes, and explore songs with tablature. With a clean, intuitive interface and professional features, InTune serves as an all-in-one toolkit for guitarists of all skill levels.
+InTune is a comprehensive guitar utility application built with Flutter, designed to help guitarists tune their instruments, practice with a metronome and learn chord shapes. With a clean, intuitive interface and professional features, InTune serves as an all-in-one toolkit for guitarists of all skill levels.
 
 ## Platforms
 
@@ -42,12 +42,6 @@ InTune is a comprehensive guitar utility application built with Flutter, designe
 - Finger positioning guides
 - Swipeable interface with carousel navigation
 
-### 🎵 Song Explorer
-- Search for songs by title or artist
-- View tablature for popular songs
-- Download and play Guitar Pro files (.gp4, .gp5)
-- Text-based tablature display
-
 ### 🎨 User Interface
 - Modern, clean design
 - Dark and light theme options
@@ -61,7 +55,6 @@ InTune leverages several specialized packages to deliver its functionality:
 - **Guitar Tuning**: Utilizes `pitch_detector_dart` and `flutter_voice_processor` for accurate real-time pitch detection
 - **Chord Library**: Implements `carousel_slider` for smooth navigation between chord diagrams
 - **Metronome**: Powered by `metronome` for precise timing and beat control
-- **Song Explorer**: Features custom tab rendering and file management with `path_provider` and `url_launcher`
 
 ## Development
 
@@ -96,4 +89,3 @@ For collaboration or inquiries, please contact:
 ## License
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
-

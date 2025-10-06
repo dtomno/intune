@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intune/code/controllers/metro.dart';
 import 'package:intune/code/controllers/theme/app_themes.dart';
 import 'package:intune/code/controllers/theme/theme_controller.dart';
-import 'package:intune/code/controllers/tuner.dart';
 
 class Metro extends StatefulWidget {
   const Metro({super.key});
@@ -14,7 +13,6 @@ class Metro extends StatefulWidget {
 
 class _MetroState extends State<Metro> with WidgetsBindingObserver {
   final _metroController = Get.find<MetroController>();
-  final _tunerController = Get.find<TunerController>();
   final _themeController = Get.find<ThemeController>();
 
   final List<DropdownMenuItem<int>> times = const [
@@ -91,7 +89,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
         ),
         backgroundColor: AppThemes.getCardColor(isDark),
         iconTheme: IconThemeData(color: AppThemes.getTextColor(isDark)),
-        elevation: 4,
+        // elevation: 4,
       ),
       body: SafeArea(
         child: Column(

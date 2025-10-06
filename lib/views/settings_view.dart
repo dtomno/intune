@@ -38,169 +38,171 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
           backgroundColor: AppThemes.getBackgroundColor(isDarkMode),
-          body: Obx(() => ListView(
-                padding: EdgeInsets.all(16.0),
-                children: [
-                  // Guitar Type Section
-                  _buildSectionHeader('Guitar Visualization', isDarkMode),
-                  _buildSettingCard(
-                    title: 'Guitar Type',
-                    description: 'Choose which guitar type to display in the tuner',
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DropdownButtonFormField<String>(
-                          value: _settingsController.settings.value.guitarType,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                          ),
-                          items: _settingsController.supportedGuitarTypes.map((type) {
-                            return DropdownMenuItem<String>(
-                              value: type,
-                              child: Text(type.capitalizeFirst!),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                                  if (value != null) {
-                                    _settingsController.setGuitarType(value);
-                                  }
-                                },
-                          dropdownColor: AppThemes.getCardColor(isDarkMode),
-                          style: TextStyle(
-                            color: AppThemes.getTextColor(isDarkMode),
-                          ),
-                        ),
-                      ],
-                    ),
-                    isDarkMode: isDarkMode,
-                  ),
-
-                  // _buildSectionHeader('Application Settings', isDarkMode),
-                  // _buildSettingCard(
-                  //   title: 'Tutorial Tips',
-                  //   description: 'Show helpful tips when using the app',
-                  //   content: Switch(
-                  //     value: _settingsController.settings.value.showTutorialTips,
-                  //     onChanged: (value) {
-                  //       _settingsController.toggleTutorialTips(value);
-                  //     },
-                  //     activeColor: AppThemes.getMainColor(isDarkMode),
-                  //   ),
-                  //   isDarkMode: isDarkMode,
-                  // ),
-
-                  _buildSettingCard(
-                    title: 'Metrnome Sounds',
-                    description: 'Choose metrnome sounds for the first and other beats respectively',
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DropdownButtonFormField<String>(
-                          value: _settingsController.settings.value.firstBeatSound,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                          ),
-                          items: _settingsController.wavs.map((sound) {
-                            return DropdownMenuItem<String>(
-                              value: sound,
-                              child: Text(sound.capitalizeFirst!),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                                  if (value != null) {
-                                    _settingsController.setFirstBeatSound(value);
-                                  }
-                                },
-                          dropdownColor: AppThemes.getCardColor(isDarkMode),
-                          style: TextStyle(
-                            color: AppThemes.getTextColor(isDarkMode),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        DropdownButtonFormField<String>(
-                          value: _settingsController.settings.value.otherBeatsSound,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                          ),
-                          items: _settingsController.wavs.map((sound) {
-                            return DropdownMenuItem<String>(
-                              value: sound,
-                              child: Text(sound.capitalizeFirst!),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                                  if (value != null) {
-                                    _settingsController.setOtherBeatsSound(value);
-                                  }
-                                },
-                          dropdownColor: AppThemes.getCardColor(isDarkMode),
-                          style: TextStyle(
-                            color: AppThemes.getTextColor(isDarkMode),
-                          ),
-                        ),
-                      ],
-                    ),
-                    isDarkMode: isDarkMode,
-                  ),
-
-                  _buildSectionHeader('Audio Settings', isDarkMode),
-                  _buildSettingCard(
-                    title: 'Silence Threshold',
-                    description: 'Adjust the sensitivity of note detection',
-                    content: Column(
-                      children: [
-                        Slider(
-                          value: _settingsController.settings.value.silenceThreshold,
-                          min: 0.01,
-                          max: 0.2,
-                          divisions: 19,
-                          label: _settingsController.settings.value.silenceThreshold.toStringAsFixed(2),
-                          onChanged: (value) {
-                            _settingsController.setSilenceThreshold(value);
-                          },
-                          activeColor: AppThemes.getMainColor(isDarkMode),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'More sensitive',
-                              style: TextStyle(
-                                color: AppThemes.getTextColor(isDarkMode),
-                                fontSize: 12,
-                              ),
+          body: SafeArea(
+            child: Obx(() => ListView(
+                  padding: EdgeInsets.all(16.0),
+                  children: [
+                    // Guitar Type Section
+                    _buildSectionHeader('Guitar Visualization', isDarkMode),
+                    _buildSettingCard(
+                      title: 'Guitar Type',
+                      description: 'Choose which guitar type to display in the tuner',
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DropdownButtonFormField<String>(
+                            value: _settingsController.settings.value.guitarType,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                             ),
-                            Text(
-                              'Less sensitive',
-                              style: TextStyle(
-                                color: AppThemes.getTextColor(isDarkMode),
-                                fontSize: 12,
-                              ),
+                            items: _settingsController.supportedGuitarTypes.map((type) {
+                              return DropdownMenuItem<String>(
+                                value: type,
+                                child: Text(type.capitalizeFirst!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                                    if (value != null) {
+                                      _settingsController.setGuitarType(value);
+                                    }
+                                  },
+                            dropdownColor: AppThemes.getCardColor(isDarkMode),
+                            style: TextStyle(
+                              color: AppThemes.getTextColor(isDarkMode),
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
+                      isDarkMode: isDarkMode,
                     ),
-                    isDarkMode: isDarkMode,
-                  ),
-                  
-                  ElevatedButton(
-                    onPressed: () {
-                      _showResetConfirmationDialog(context, isDarkMode);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppThemes.getErrorColor(),
-                      foregroundColor: Colors.white,
-                      textStyle: TextStyle(fontWeight: FontWeight.bold),
-                      padding: EdgeInsets.symmetric(vertical: 12),
+            
+                    // _buildSectionHeader('Application Settings', isDarkMode),
+                    // _buildSettingCard(
+                    //   title: 'Tutorial Tips',
+                    //   description: 'Show helpful tips when using the app',
+                    //   content: Switch(
+                    //     value: _settingsController.settings.value.showTutorialTips,
+                    //     onChanged: (value) {
+                    //       _settingsController.toggleTutorialTips(value);
+                    //     },
+                    //     activeColor: AppThemes.getMainColor(isDarkMode),
+                    //   ),
+                    //   isDarkMode: isDarkMode,
+                    // ),
+            
+                    _buildSettingCard(
+                      title: 'Metrnome Sounds',
+                      description: 'Choose metrnome sounds for the first and other beats respectively',
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DropdownButtonFormField<String>(
+                            value: _settingsController.settings.value.firstBeatSound,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            ),
+                            items: _settingsController.wavs.map((sound) {
+                              return DropdownMenuItem<String>(
+                                value: sound,
+                                child: Text(sound.capitalizeFirst!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                                    if (value != null) {
+                                      _settingsController.setFirstBeatSound(value);
+                                    }
+                                  },
+                            dropdownColor: AppThemes.getCardColor(isDarkMode),
+                            style: TextStyle(
+                              color: AppThemes.getTextColor(isDarkMode),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          DropdownButtonFormField<String>(
+                            value: _settingsController.settings.value.otherBeatsSound,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            ),
+                            items: _settingsController.wavs.map((sound) {
+                              return DropdownMenuItem<String>(
+                                value: sound,
+                                child: Text(sound.capitalizeFirst!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                                    if (value != null) {
+                                      _settingsController.setOtherBeatsSound(value);
+                                    }
+                                  },
+                            dropdownColor: AppThemes.getCardColor(isDarkMode),
+                            style: TextStyle(
+                              color: AppThemes.getTextColor(isDarkMode),
+                            ),
+                          ),
+                        ],
+                      ),
+                      isDarkMode: isDarkMode,
                     ),
-                    child: Text('Reset All Settings'),
-                  ),
-                ],
-              )),
+            
+                    _buildSectionHeader('Audio Settings', isDarkMode),
+                    _buildSettingCard(
+                      title: 'Silence Threshold',
+                      description: 'Adjust the sensitivity of note detection',
+                      content: Column(
+                        children: [
+                          Slider(
+                            value: _settingsController.settings.value.silenceThreshold,
+                            min: 0.01,
+                            max: 0.2,
+                            divisions: 19,
+                            label: _settingsController.settings.value.silenceThreshold.toStringAsFixed(2),
+                            onChanged: (value) {
+                              _settingsController.setSilenceThreshold(value);
+                            },
+                            activeColor: AppThemes.getMainColor(isDarkMode),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'More sensitive',
+                                style: TextStyle(
+                                  color: AppThemes.getTextColor(isDarkMode),
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Text(
+                                'Less sensitive',
+                                style: TextStyle(
+                                  color: AppThemes.getTextColor(isDarkMode),
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      isDarkMode: isDarkMode,
+                    ),
+                    
+                    ElevatedButton(
+                      onPressed: () {
+                        _showResetConfirmationDialog(context, isDarkMode);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppThemes.getErrorColor(),
+                        foregroundColor: Colors.white,
+                        textStyle: TextStyle(fontWeight: FontWeight.bold),
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: Text('Reset All Settings'),
+                    ),
+                  ],
+                )),
+          ),
         );
       },
     );

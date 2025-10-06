@@ -29,109 +29,111 @@ class About extends StatelessWidget {
               color: AppThemes.getTextColor(isDarkMode),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Logo and app name section
-                  CircleAvatar(
-                    backgroundColor: AppThemes.getCardColor(isDarkMode),
-                    foregroundImage: const AssetImage('images/logos.png'),
-                    radius: 75.0,
-                  ),
-                  const SizedBox(height: 24),
-                  
-                  // App name and version
-                  Text(
-                    'InTune',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: AppThemes.getMainColor(isDarkMode),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Logo and app name section
+                    CircleAvatar(
+                      backgroundColor: AppThemes.getCardColor(isDarkMode),
+                      foregroundImage: const AssetImage('images/logos.png'),
+                      radius: 75.0,
                     ),
-                  ),
-                  Text(
-                    'Version 1.0.0',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppThemes.getTextColor(isDarkMode).withOpacity(0.7),
+                    const SizedBox(height: 24),
+                    
+                    // App name and version
+                    Text(
+                      'InTune',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: AppThemes.getMainColor(isDarkMode),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  
-                  // App description
-                  _buildSection(
-                    title: 'About InTune',
-                    content: 'InTune is a professional guitar tuning and music tool app designed for musicians of all levels. '
-                            'It features a precision guitar tuner with multiple tuning options, a metronome, and chord library to enhance your playing experience.',
-                    isDarkMode: isDarkMode,
-                  ),
-                  
-                  _buildSection(
-                    title: 'Features',
-                    content: '• Guitar tuner with multiple tuning options\n'
-                            '• Metronome with custom BPM settings\n'
-                            '• Comprehensive chord library\n'
-                            '• Dark and light theme support\n'
-                            '• Simple and intuitive interface',
-                    isDarkMode: isDarkMode,
-                  ),
-                  
-                  _buildSection(
-                    title: 'Developer',
-                    content: 'Created with ♥ by DAKTARI DEV',
-                    isDarkMode: isDarkMode,
-                  ),
-                  
-                  const SizedBox(height: 20),
-                  
-                  // Contact and social links
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildSocialButton(
-                        icon: FontAwesomeIcons.github,
-                        url: 'https://github.com/dtomno',
-                        isDarkMode: isDarkMode,
+                    Text(
+                      'Version 1.0.0',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppThemes.getTextColor(isDarkMode).withOpacity(0.7),
                       ),
-                      const SizedBox(width: 24),
-                      _buildSocialButton(
-                        icon: Icons.email,
-                        url: 'apptests.tomno@gmail.com',
-                        isDarkMode: isDarkMode,
-                      ),
-                      const SizedBox(width: 24),
-                      _buildSocialButton(
-                        icon: FontAwesomeIcons.globe,
-                        url: 'https://dennis-tomno.onrender.com',
-                        isDarkMode: isDarkMode,
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 40),
-                  
-                  // Copyright and attribution
-                  Text(
-                    '© 2025 InTune - All Rights Reserved',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppThemes.getTextColor(isDarkMode).withOpacity(0.6),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  // Text(
-                  //   'Made with Flutter',
-                  //   style: TextStyle(
-                  //     fontSize: 12,
-                  //     color: AppThemes.getTextColor(isDarkMode).withOpacity(0.6),
-                  //   ),
-                  //   textAlign: TextAlign.center,
-                  // ),
-                ],
+                    const SizedBox(height: 32),
+                    
+                    // App description
+                    _buildSection(
+                      title: 'About InTune',
+                      content: 'InTune is a professional guitar tuning and music tool app designed for musicians of all levels. '
+                              'It features a precision guitar tuner with multiple tuning options, a metronome, and chord library to enhance your playing experience.',
+                      isDarkMode: isDarkMode,
+                    ),
+                    
+                    _buildSection(
+                      title: 'Features',
+                      content: '• Guitar tuner with multiple tuning options\n'
+                              '• Metronome with custom BPM settings\n'
+                              '• Comprehensive chord library\n'
+                              '• Dark and light theme support\n'
+                              '• Simple and intuitive interface',
+                      isDarkMode: isDarkMode,
+                    ),
+                    
+                    _buildSection(
+                      title: 'Developer',
+                      content: 'Created with ♥ by DAKTARI DEV',
+                      isDarkMode: isDarkMode,
+                    ),
+                    
+                    const SizedBox(height: 20),
+                    
+                    // Contact and social links
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildSocialButton(
+                          icon: FontAwesomeIcons.github,
+                          url: 'https://github.com/dtomno',
+                          isDarkMode: isDarkMode,
+                        ),
+                        const SizedBox(width: 24),
+                        _buildSocialButton(
+                          icon: Icons.email,
+                          url: 'apptests.tomno@gmail.com',
+                          isDarkMode: isDarkMode,
+                        ),
+                        const SizedBox(width: 24),
+                        _buildSocialButton(
+                          icon: FontAwesomeIcons.globe,
+                          url: 'https://dennis-tomno.onrender.com',
+                          isDarkMode: isDarkMode,
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 40),
+                    
+                    // Copyright and attribution
+                    Text(
+                      '© ${DateTime.now().year} InTune - All Rights Reserved',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppThemes.getTextColor(isDarkMode).withOpacity(0.6),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    // Text(
+                    //   'Made with Flutter',
+                    //   style: TextStyle(
+                    //     fontSize: 12,
+                    //     color: AppThemes.getTextColor(isDarkMode).withOpacity(0.6),
+                    //   ),
+                    //   textAlign: TextAlign.center,
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),

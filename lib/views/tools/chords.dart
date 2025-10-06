@@ -63,7 +63,7 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
         ),
         centerTitle: true,
         backgroundColor: cardColor,
-        elevation: 4,
+        // elevation: 4,
         iconTheme: IconThemeData(color: textColor),
       ),
       body: SafeArea(
