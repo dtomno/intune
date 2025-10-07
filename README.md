@@ -61,7 +61,7 @@ InTune leverages several specialized packages to deliver its functionality:
 ### Setup
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/intune.git
+git clone https://github.com/dtomno/intune.git
 
 # Run setup.bat(windows)
 setup.bat
