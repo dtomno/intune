@@ -23,16 +23,21 @@ class _TunerState extends State<TunerView> with RouteAware {
   GlobalKey imageKey = GlobalKey();
   late Worker _worker;
 
+  void _updateCurrentImage() {
+    _currentImage = getHeadstockImagePath();
+    _imageDimensionsFuture = getImageDimensions();
+  }
+
   @override
   void initState() {
     super.initState();
     setState(() {
-      _currentImage = getHeadstockImagePath();
+      _updateCurrentImage();
     });
     _worker = ever(_settingsController.settings, (SettingsModel updatedSettings) {
       if(!mounted) return;
       setState(() {
-        _currentImage = getHeadstockImagePath();
+        _updateCurrentImage();
       });
     });
   }
@@ -54,7 +59,7 @@ class _TunerState extends State<TunerView> with RouteAware {
   void didPopNext() {
     // Called when another route above this one is popped (i.e., we are now on top).
     setState(() {
-      _currentImage = getHeadstockImagePath();
+      _updateCurrentImage();
     });
   }
 
@@ -82,6 +87,7 @@ class _TunerState extends State<TunerView> with RouteAware {
   }
 
   String _currentImage = '';
+  Future<ui.Image>? _imageDimensionsFuture;
 
   Offset getStringPositionOnHeadstock(int index) {
     String tuning = _tunerController.tuning.value;
@@ -105,14 +111,21 @@ class _TunerState extends State<TunerView> with RouteAware {
     ImageProvider imageProvider = AssetImage(_currentImage);
     final Completer<ui.Image> completer = Completer<ui.Image>();
     final ImageStream stream = imageProvider.resolve(ImageConfiguration.empty);
-    final listener = ImageStreamListener((ImageInfo info, bool _) {
-      completer.complete(info.image);
-    });
+    final listener = ImageStreamListener(
+      (ImageInfo info, bool _) {
+        if (!completer.isCompleted) completer.complete(info.image);
+      },
+      onError: (Object exception, StackTrace? stackTrace) {
+        if (!completer.isCompleted) completer.completeError(exception, stackTrace);
+      },
+    );
 
     stream.addListener(listener);
-    final ui.Image image = await completer.future;
-    stream.removeListener(listener);
-    return image;
+    try {
+      return await completer.future;
+    } finally {
+      stream.removeListener(listener);
+    }
   }
 
   @override
@@ -133,7 +146,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                       Row(
                         children: [
                           Obx(() => Text(
-                                _tunerController.isRecording.value ? 'ON' : 'OFF',
+                                _tunerController.isRecording.value ? 'tuner_on'.tr : 'tuner_off'.tr,
                                 style: TextStyle(
                                     color: _tunerController.isRecording.value
                                         ? AppThemes.getMainColor(isDarkMode)
@@ -150,8 +163,8 @@ class _TunerState extends State<TunerView> with RouteAware {
                                     // Show confirmation dialog when trying to stop
                                     Get.dialog(
                                       AlertDialog(
-                                        title: Text('Stop Tuning?'),
-                                        content: Text('Would you like to continue tuning?'),
+                                        title: Text('stop_tuning_title'.tr),
+                                        content: Text('stop_tuning_prompt'.tr),
                                         backgroundColor: AppThemes.getCardColor(isDarkMode),
                                         titleTextStyle: TextStyle(
                                           color: AppThemes.getTextColor(isDarkMode),
@@ -164,7 +177,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                                         actions: [
                                           TextButton(
                                             child: Text(
-                                              'Stop',
+                                              'stop'.tr,
                                               style: TextStyle(color: AppThemes.getErrorColor()),
                                             ),
                                             onPressed: () {
@@ -174,7 +187,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                                           ),
                                           TextButton(
                                             child: Text(
-                                              'Continue Tuning',
+                                              'continue_tuning'.tr,
                                               style: TextStyle(color: AppThemes.getMainColor(isDarkMode)),
                                             ),
                                             onPressed: () {
@@ -214,7 +227,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                                     _tunerController.tuning.value = newValue;
                                     _tunerController.updateTuningNotes();
                                     setState(() {
-                                      _currentImage = getHeadstockImagePath();
+                                      _updateCurrentImage();
                                     });
                                   }
                                 },
@@ -336,7 +349,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                'Start tuning by playing any string',
+                                'start_tuning_hint'.tr,
                                 style: TextStyle(color: AppThemes.getTextColor(isDarkMode), fontSize: 12),
                               ),
                             ),
@@ -349,7 +362,7 @@ class _TunerState extends State<TunerView> with RouteAware {
                               ),
                               child: Text(
                                 !_tunerController.tuningNotes.isNotEmpty
-                                    ? '${_tunerController.status.value} ${_tunerController.diff.value.round()}'
+                                    ? '${_tunerController.status.value.tr} ${_tunerController.diff.value.round()}'
                                     : '',
                                 style: TextStyle(color: AppThemes.getTextColor(isDarkMode), fontSize: 12),
                               ),
@@ -382,15 +395,29 @@ class _TunerState extends State<TunerView> with RouteAware {
 
                                 // Position string buttons
                                 FutureBuilder<ui.Image>(
-                                  future: getImageDimensions(), // fetch only once
+                                  future: _imageDimensionsFuture,
                                   builder: (context, snapshot) {
                                     if (!snapshot.hasData) {
-                                      return const SizedBox(); // or CircularProgressIndicator()
+                                      return const SizedBox();
                                     }
 
                                     final ui.Image image = snapshot.data!;
-                                    final imageWidth = image.width.toDouble();
-                                    final imageHeight = image.height.toDouble();
+                                    final double imageWidth = image.width.toDouble();
+                                    final double imageHeight = image.height.toDouble();
+                                    final double containerWidth = constraints.maxWidth;
+                                    final double containerHeight = constraints.maxHeight;
+
+                                    // Compute the size BoxFit.contain would render the image at,
+                                    // then apply Transform.scale factor on top.
+                                    final double fitScale = (imageWidth / imageHeight > containerWidth / containerHeight)
+                                        ? containerWidth / imageWidth
+                                        : containerHeight / imageHeight;
+                                    final double renderedWidth = imageWidth * fitScale * imageScaleFactor;
+                                    final double renderedHeight = imageHeight * fitScale * imageScaleFactor;
+
+                                    // The image is centered in the container (Center widget).
+                                    final double originX = (containerWidth - renderedWidth) / 2;
+                                    final double originY = (containerHeight - renderedHeight) / 2;
 
                                     return Obx(() {
                                       return Stack(
@@ -398,33 +425,21 @@ class _TunerState extends State<TunerView> with RouteAware {
                                           int index = entry.key;
                                           String note = entry.value;
 
-                                          RenderBox? box = imageKey.currentContext?.findRenderObject() as RenderBox?;
-                                          if (box != null && box.hasSize) {
-                                            final Size imageDisplaySize = box.size;
-                                            
-                                            // Get the relative position from the headstock function (0-1 range)
-                                            final Offset relativePosition = getStringPositionOnHeadstock(index);
-                                            
-                                            // Convert relative position to actual pixel position on the displayed image
-                                            double actualX = (relativePosition.dx / imageWidth) * imageDisplaySize.width;
-                                            double actualY = (relativePosition.dy / imageHeight) * imageDisplaySize.height;
-                                            
-                                            // Center the circle on the calculated position
-                                            double centerX = actualX - 20; // Half of circle width (40/2)
-                                            double centerY = imageDisplaySize.height - actualY - 20; // Half of circle height (40/2), flip Y coordinate
+                                          final Offset pos = getStringPositionOnHeadstock(index);
 
-                                            return Positioned(
-                                              left: centerX,
-                                              top: centerY,
-                                              child: _buildNoteCircle(
-                                                note,
-                                                isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
-                                                isDarkMode: isDarkMode,
-                                              ),
-                                            );
-                                          }
+                                          // Map image-pixel coords (y=0 at bottom) → screen coords (y=0 at top).
+                                          final double left = originX + (pos.dx / imageWidth) * renderedWidth - 20;
+                                          final double top  = originY + (1.0 - pos.dy / imageHeight) * renderedHeight - 20;
 
-                                          return const SizedBox(); // Fallback if box is null
+                                          return Positioned(
+                                            left: left,
+                                            top: top,
+                                            child: _buildNoteCircle(
+                                              note,
+                                              isActive: _tunerController.isRecording.value && note == _tunerController.note.value,
+                                              isDarkMode: isDarkMode,
+                                            ),
+                                          );
                                         }).toList(),
                                       );
                                     });
@@ -469,13 +484,13 @@ Offset getStringPositionOnHeadstockBass4(int index) {
   // Assuming original image width: ~2000px, height: ~2000px (adjust as needed)
   switch (index) {
     case 0:
-      return Offset(200, 900); // Low E string (lowest)
+      return Offset(250, 900); // Low E string (lowest)
     case 1:
-      return Offset(200, 1350); // A string (second lowest)
+      return Offset(250, 1300); // A string (second lowest)
     case 2:
-      return Offset(2050, 1350); // D string (middle-lower)
+      return Offset(1750, 1350); // D string (middle-lower)
     case 3:
-      return Offset(2050, 900); // G string (middle-upper)
+      return Offset(1750, 900); // G string (middle-upper)
     default:
       return Offset(0, 0);
   }
@@ -485,15 +500,15 @@ Offset getStringPositionOnHeadstockBass5(int index) {
   // Return relative positions (0.0 to 1.0) based on original image dimensions
   switch (index) {
     case 0:
-      return Offset(300, 470); // Low B string (lowest)
+      return Offset(0, 500); // Low B string (lowest)
     case 1:
-      return Offset(350, 750); // E string (second lowest)
+      return Offset(50, 750); // E string (second lowest)
     case 2:
-      return Offset(400, 1030); // A string (middle-lower)
+      return Offset(100, 1000); // A string (middle-lower)
     case 3:
-      return Offset(480, 1340); // D string (middle-upper)
+      return Offset(150, 1250); // D string (middle-upper)
     case 4:
-      return Offset(1600, 650); // G string (second highest)
+      return Offset(1100, 680); // G string (second highest)
     default:
       return Offset(0, 0);
   }
@@ -503,17 +518,17 @@ Offset getStringPositionOnHeadstockBass6(int index) {
   // Return relative positions (0.0 to 1.0) based on original image dimensions
   switch (index) {
     case 0:
-      return Offset(120, 400); // Low B string (lowest)
+      return Offset(50, 400); // Low B string (lowest)
     case 1:
-      return Offset(170, 620); // E string (second lowest)
+      return Offset(100, 600); // E string (second lowest)
     case 2:
-      return Offset(200, 840); // A string (middle-lower)
+      return Offset(150, 800); // A string (middle-lower)
     case 3:
-      return Offset(1150, 800); // D string (middle-upper)
+      return Offset(900, 750); // D string (middle-upper)
     case 4:
-      return Offset(1200, 540); // G string (second highest)
+      return Offset(950, 550); // G string (second highest)
     case 5:
-      return Offset(1250, 320); // C string (highest)
+      return Offset(1000, 350); // C string (highest)
     default:
       return Offset(0, 0);
   }
@@ -523,17 +538,17 @@ Offset getStringPositionOnHeadstockElectric(int index) {
   // Return relative positions (0.0 to 1.0) for electric guitar headstock
   switch (index) {
     case 0:
-      return Offset(350, 530); // Low E string (lowest)
+      return Offset(100, 550); // Low E string (lowest)
     case 1:
-      return Offset(400, 730); // A string (second lowest)
+      return Offset(150, 700); // A string (second lowest)
     case 2:
-      return Offset(450, 900); // D string (middle-lower)
+      return Offset(200, 850); // D string (middle-lower)
     case 3:
-      return Offset(500, 1080); // G string (middle-upper)
+      return Offset(250, 1000); // G string (middle-upper)
     case 4:
-      return Offset(550, 1260); // B string (second highest)
+      return Offset(300, 1150); // B string (second highest)
     case 5:
-      return Offset(600, 1430); // High E string (highest)
+      return Offset(350, 1300); // High E string (highest)
     default:
       return Offset(0, 0);
   }
@@ -543,17 +558,17 @@ Offset getStringPositionOnHeadstockNormal(int index) {
   // Return relative positions (0.0 to 1.0) for acoustic guitar headstock
   switch (index) {
     case 0:
-      return Offset(350, 450); // Low E string (lowest)
+      return Offset(500, 600); // Low E string (lowest)
     case 1:
-      return Offset(350, 850); // A string (second lowest)
+      return Offset(500, 950); // A string (second lowest)
     case 2:
-      return Offset(350, 1250); // D string (middle-lower)
+      return Offset(500, 1300); // D string (middle-lower)
     case 3:
-      return Offset(1950, 1250); // G string (middle-upper)
+      return Offset(1800, 1300); // G string (middle-upper)
     case 4:
-      return Offset(1950, 850); // B string (second highest)
+      return Offset(1800, 950); // B string (second highest)
     case 5:
-      return Offset(1950, 450); // High E string (highest)
+      return Offset(1800, 620); // High E string (highest)
     default:
       return Offset(0, 0);
   }

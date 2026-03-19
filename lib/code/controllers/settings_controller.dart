@@ -20,9 +20,9 @@ class SettingsController extends GetxController {
   final List<String> supportedGuitarTypes = ['acoustic', 'electric'];
     
   @override
-  void onInit() async{
+  void onInit() {
     super.onInit();
-    await _loadSettings();
+    _loadSettings();
   }
   
   // Load settings from shared preferences
@@ -90,5 +90,12 @@ class SettingsController extends GetxController {
       _saveSettings();
       update();
     }
+  }
+
+  // Reset all settings to defaults and persist
+  void resetSettings() {
+    settings.value = SettingsModel();
+    _saveSettings();
+    update();
   }
 }

@@ -55,7 +55,7 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Chord Library',
+          'chord_library'.tr,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: textColor,
@@ -121,7 +121,7 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
                     child: Column(
                       children: [
                         Text(
-                          'Select Your Chord',
+                          'select_your_chord'.tr,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -231,7 +231,10 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
                     const SizedBox(width: 8),
                     Obx(
                       () => Text(
-                        'Chord shape ${_chordController.currentIndex.value + 1} of ${_chordController.changingChords.length}',
+                        'chord_shape'.trParams({
+                          'current': '${_chordController.currentIndex.value + 1}',
+                          'total': '${_chordController.changingChords.length}',
+                        }),
                         style: TextStyle(
                           color: textColor.withOpacity(0.7),
                           fontWeight: FontWeight.w500,
@@ -267,46 +270,52 @@ class _ChordsState extends State<Chords> with SingleTickerProviderStateMixin {
                         
                         // Chord diagram
                         Expanded(
-                          child: CarouselSlider(
-                            items: _chordController.changingChords.map((i) {
-                              return Builder(
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                    decoration: BoxDecoration(
-                                      color: cardColor,
-                                      borderRadius: BorderRadius.circular(16),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: isDark ? Colors.black38 : Colors.black12,
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: SvgPicture.asset(
-                                        i,
-                                        colorFilter: ColorFilter.mode(mainColor, BlendMode.srcIn),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            }).toList(),
-                            carouselController: resetController,
-                            options: CarouselOptions(
-                              initialPage: _chordController.currentIndex.value,
-                              onPageChanged: (index, reason) {
-                                _chordController.currentIndex.value = index;
-                              },
-                              height: size.height * 0.4,
-                              enableInfiniteScroll: false,
-                              enlargeCenterPage: true,
-                              viewportFraction: 0.8,
-                            ),
-                          ),
+                          child: _chordController.changingChords.isEmpty
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: mainColor,
+                                  ),
+                                )
+                              : CarouselSlider(
+                                  items: _chordController.changingChords.map((i) {
+                                    return Builder(
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                          decoration: BoxDecoration(
+                                            color: cardColor,
+                                            borderRadius: BorderRadius.circular(16),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: isDark ? Colors.black38 : Colors.black12,
+                                                blurRadius: 10,
+                                                offset: const Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: SvgPicture.asset(
+                                              i,
+                                              colorFilter: ColorFilter.mode(mainColor, BlendMode.srcIn),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }).toList(),
+                                  carouselController: resetController,
+                                  options: CarouselOptions(
+                                    initialPage: _chordController.currentIndex.value,
+                                    onPageChanged: (index, reason) {
+                                      _chordController.currentIndex.value = index;
+                                    },
+                                    height: size.height * 0.4,
+                                    enableInfiniteScroll: false,
+                                    enlargeCenterPage: true,
+                                    viewportFraction: 0.8,
+                                  ),
+                                ),
                         ),
                         
                         // Indicator dots

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intune/code/controllers/settings_controller.dart';
 import 'package:intune/code/controllers/theme/app_themes.dart';
 import 'package:intune/code/controllers/theme/theme_controller.dart';
-import 'package:intune/code/models/settings_model.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -24,7 +23,7 @@ class _SettingsViewState extends State<SettingsView> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Settings',
+              'settings'.tr,
               style: TextStyle(
                 color: AppThemes.getTextColor(isDarkMode),
                 fontWeight: FontWeight.bold,
@@ -43,10 +42,10 @@ class _SettingsViewState extends State<SettingsView> {
                   padding: EdgeInsets.all(16.0),
                   children: [
                     // Guitar Type Section
-                    _buildSectionHeader('Guitar Visualization', isDarkMode),
+                    _buildSectionHeader('guitar_visualization'.tr, isDarkMode),
                     _buildSettingCard(
-                      title: 'Guitar Type',
-                      description: 'Choose which guitar type to display in the tuner',
+                      title: 'guitar_type'.tr,
+                      description: 'guitar_type_desc'.tr,
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -59,7 +58,7 @@ class _SettingsViewState extends State<SettingsView> {
                             items: _settingsController.supportedGuitarTypes.map((type) {
                               return DropdownMenuItem<String>(
                                 value: type,
-                                child: Text(type.capitalizeFirst!),
+                                child: Text(type.tr),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -92,8 +91,8 @@ class _SettingsViewState extends State<SettingsView> {
                     // ),
             
                     _buildSettingCard(
-                      title: 'Metrnome Sounds',
-                      description: 'Choose metrnome sounds for the first and other beats respectively',
+                      title: 'metronome_sounds'.tr,
+                      description: 'metronome_sounds_desc'.tr,
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -147,10 +146,10 @@ class _SettingsViewState extends State<SettingsView> {
                       isDarkMode: isDarkMode,
                     ),
             
-                    _buildSectionHeader('Audio Settings', isDarkMode),
+                    _buildSectionHeader('audio_settings'.tr, isDarkMode),
                     _buildSettingCard(
-                      title: 'Silence Threshold',
-                      description: 'Adjust the sensitivity of note detection',
+                      title: 'silence_threshold'.tr,
+                      description: 'silence_threshold_desc'.tr,
                       content: Column(
                         children: [
                           Slider(
@@ -168,14 +167,14 @@ class _SettingsViewState extends State<SettingsView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'More sensitive',
+                                'more_sensitive'.tr,
                                 style: TextStyle(
                                   color: AppThemes.getTextColor(isDarkMode),
                                   fontSize: 12,
                                 ),
                               ),
                               Text(
-                                'Less sensitive',
+                                'less_sensitive'.tr,
                                 style: TextStyle(
                                   color: AppThemes.getTextColor(isDarkMode),
                                   fontSize: 12,
@@ -198,7 +197,7 @@ class _SettingsViewState extends State<SettingsView> {
                         textStyle: TextStyle(fontWeight: FontWeight.bold),
                         padding: EdgeInsets.symmetric(vertical: 12),
                       ),
-                      child: Text('Reset All Settings'),
+                      child: Text('reset_all_settings'.tr),
                     ),
                   ],
                 )),
@@ -268,8 +267,8 @@ class _SettingsViewState extends State<SettingsView> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Reset Settings'),
-        content: Text('Are you sure you want to reset all settings to default values?'),
+        title: Text('reset_settings_title'.tr),
+        content: Text('reset_settings_confirm'.tr),
         backgroundColor: AppThemes.getCardColor(isDarkMode),
         titleTextStyle: TextStyle(
           color: AppThemes.getTextColor(isDarkMode),
@@ -283,19 +282,18 @@ class _SettingsViewState extends State<SettingsView> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'Cancel',
+              'cancel'.tr,
               style: TextStyle(color: AppThemes.getTextColor(isDarkMode)),
             ),
           ),
           TextButton(
             onPressed: () {
-              _settingsController.settings.value = SettingsModel(); // Reset to defaults
-              _settingsController.update();
+              _settingsController.resetSettings();
               Navigator.of(context).pop();
               
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Settings reset to defaults',style: TextStyle(
+                  content: Text('settings_reset_message'.tr, style: TextStyle(
                             color: AppThemes.getTextColor(isDarkMode),
                           ),),
                   backgroundColor: AppThemes.getCardColor(isDarkMode),
@@ -303,7 +301,7 @@ class _SettingsViewState extends State<SettingsView> {
               );
             },
             child: Text(
-              'Reset',
+              'reset'.tr,
               style: TextStyle(color: AppThemes.getErrorColor()),
             ),
           ),

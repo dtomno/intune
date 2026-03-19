@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:intune/code/controllers/settings_controller.dart';
 import 'package:metronome/metronome.dart';
@@ -12,6 +14,7 @@ class MetroController extends GetxController {
 
   final _metronomePlugin = Metronome();
   final SettingsController _settingsController = Get.find<SettingsController>();
+  StreamSubscription<int>? _tickSubscription;
 
   int currentTick = 0;
 
@@ -26,7 +29,7 @@ class MetroController extends GetxController {
       timeSignature: beats.value,
       sampleRate: 44100,
     );
-    _metronomePlugin.tickStream.listen(
+    _tickSubscription = _metronomePlugin.tickStream.listen(
       (int tick) {
         count.value = tick;
       },
@@ -55,7 +58,8 @@ class MetroController extends GetxController {
 
   @override
   void onClose() {
+    _tickSubscription?.cancel();
     _metronomePlugin.destroy();
-    super.dispose();
+    super.onClose();
   }
 }

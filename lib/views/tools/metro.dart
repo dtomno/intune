@@ -81,7 +81,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
       backgroundColor: AppThemes.getBackgroundColor(isDark),
       appBar: AppBar(
         title: Text(
-          'Metronome',
+          'metronome'.tr,
           style: TextStyle(
             color: AppThemes.getTextColor(isDark),
             fontWeight: FontWeight.bold,
@@ -153,7 +153,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                 onPressed: () => _adjustTempo(-10),
                 isDark: isDark,
                 mainColor: mainColor,
-                tooltip: 'Decrease by 10',
+                tooltip: 'decrease_by_10'.tr,
               ),
               
               // Decrease button
@@ -162,7 +162,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                 onPressed: () => _adjustTempo(-1),
                 isDark: isDark,
                 mainColor: mainColor,
-                tooltip: 'Decrease by 1',
+                tooltip: 'decrease_by_1'.tr,
               ),
               
               // Slider control
@@ -192,7 +192,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                 onPressed: () => _adjustTempo(1),
                 isDark: isDark,
                 mainColor: mainColor,
-                tooltip: 'Increase by 1',
+                tooltip: 'increase_by_1'.tr,
               ),
               
               // Faster increase button
@@ -201,7 +201,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
                 onPressed: () => _adjustTempo(10),
                 isDark: isDark,
                 mainColor: mainColor,
-                tooltip: 'Increase by 10',
+                tooltip: 'increase_by_10'.tr,
               ),
             ],
           ),
@@ -276,7 +276,7 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
       child: Column(
         children: [
           Text(
-            'Time Signature',
+            'time_signature'.tr,
             style: TextStyle(
               fontSize: 18,
               color: AppThemes.getTextColor(isDark),
@@ -371,9 +371,9 @@ class _MetroState extends State<Metro> with WidgetsBindingObserver {
           // Status text
           Obx(
             () => Text(
-                _metroController.play.value 
-                    ? 'Tap to stop' 
-                    : 'Tap to start',
+                _metroController.play.value
+                    ? 'tap_to_stop'.tr
+                    : 'tap_to_start'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,

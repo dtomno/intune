@@ -7,10 +7,10 @@ import 'package:intune/code/models/song.dart';
 import 'package:intune/views/songs/song_detail_view.dart';
 
 class SongSearchView extends StatefulWidget {
-  const SongSearchView({Key? key}) : super(key: key);
+  const SongSearchView({super.key});
 
   @override
-  _SongSearchViewState createState() => _SongSearchViewState();
+  State<SongSearchView> createState() => _SongSearchViewState();
 }
 
 class _SongSearchViewState extends State<SongSearchView> {

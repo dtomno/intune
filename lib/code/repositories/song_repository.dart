@@ -153,7 +153,7 @@ class SongRepository {
       
       await prefs.setStringList('recentSearches', recentSearches);
     } catch (e) {
-      print('Failed to save recent search: $e');
+      // print('Failed to save recent search: $e');
     }
   }
   
@@ -163,7 +163,7 @@ class SongRepository {
       final prefs = await SharedPreferences.getInstance();
       return prefs.getStringList('recentSearches') ?? [];
     } catch (e) {
-      print('Failed to get recent searches: $e');
+      // print('Failed to get recent searches: $e');
       return [];
     }
   }
@@ -174,7 +174,7 @@ class SongRepository {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('recentSearches');
     } catch (e) {
-      print('Failed to clear recent searches: $e');
+      // print('Failed to clear recent searches: $e');
     }
   }
   

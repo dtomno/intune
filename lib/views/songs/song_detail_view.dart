@@ -277,12 +277,14 @@ class SongDetailView extends StatelessWidget {
           await _tabService.openTabFileWithExternalApp(file);
         } catch (e) {
           // Show error if can't open the file
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to open tab file: $e'),
-              backgroundColor: AppThemes.getErrorColor(),
-            ),
-          );
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to open tab file: $e'),
+                backgroundColor: AppThemes.getErrorColor(),
+              ),
+            );
+          }
         }
       }
     } else {
@@ -317,9 +319,11 @@ class SongDetailView extends StatelessWidget {
         final file = await _songController.downloadTabFile();
         
         // Close loading dialog
-        Navigator.of(context).pop();
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
         
-        if (file != null) {
+        if (file != null && context.mounted) {
           // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -332,12 +336,14 @@ class SongDetailView extends StatelessWidget {
                   try {
                     await _tabService.openTabFileWithExternalApp(file);
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Failed to open tab file: $e'),
-                        backgroundColor: AppThemes.getErrorColor(),
-                      ),
-                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to open tab file: $e'),
+                          backgroundColor: AppThemes.getErrorColor(),
+                        ),
+                      );
+                    }
                   }
                 },
               ),
@@ -346,13 +352,15 @@ class SongDetailView extends StatelessWidget {
         }
       } catch (e) {
         // Close loading dialog and show error
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to download tab file: $e'),
-            backgroundColor: AppThemes.getErrorColor(),
-          ),
-        );
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to download tab file: $e'),
+              backgroundColor: AppThemes.getErrorColor(),
+            ),
+          );
+        }
       }
     }
   }

@@ -18,7 +18,7 @@ class About extends StatelessWidget {
           backgroundColor: AppThemes.getBackgroundColor(isDarkMode),
           appBar: AppBar(
             title: Text(
-              'About InTune',
+              'about_intune'.tr,
               style: TextStyle(
                 color: AppThemes.getTextColor(isDarkMode),
                 fontWeight: FontWeight.bold,
@@ -54,7 +54,7 @@ class About extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Version 1.0.0',
+                      'version'.tr,
                       style: TextStyle(
                         fontSize: 16,
                         color: AppThemes.getTextColor(isDarkMode).withOpacity(0.7),
@@ -64,25 +64,20 @@ class About extends StatelessWidget {
                     
                     // App description
                     _buildSection(
-                      title: 'About InTune',
-                      content: 'InTune is a professional guitar tuning and music tool app designed for musicians of all levels. '
-                              'It features a precision guitar tuner with multiple tuning options, a metronome, and chord library to enhance your playing experience.',
+                      title: 'about_intune'.tr,
+                      content: 'about_description'.tr,
                       isDarkMode: isDarkMode,
                     ),
-                    
+
                     _buildSection(
-                      title: 'Features',
-                      content: '• Guitar tuner with multiple tuning options\n'
-                              '• Metronome with custom BPM settings\n'
-                              '• Comprehensive chord library\n'
-                              '• Dark and light theme support\n'
-                              '• Simple and intuitive interface',
+                      title: 'features'.tr,
+                      content: 'features_list'.tr,
                       isDarkMode: isDarkMode,
                     ),
-                    
+
                     _buildSection(
-                      title: 'Developer',
-                      content: 'Created with ♥ by DAKTARI DEV',
+                      title: 'developer'.tr,
+                      content: 'developer_credit'.tr,
                       isDarkMode: isDarkMode,
                     ),
                     
@@ -116,7 +111,7 @@ class About extends StatelessWidget {
                     
                     // Copyright and attribution
                     Text(
-                      '© ${DateTime.now().year} InTune - All Rights Reserved',
+                      'copyright'.trParams({'year': '${DateTime.now().year}'}),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppThemes.getTextColor(isDarkMode).withOpacity(0.6),

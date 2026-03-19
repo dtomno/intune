@@ -16,9 +16,9 @@ Widget tools() => GetBuilder<ThemeController>(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Tools',
+                  'tools'.tr,
                   style: TextStyle(
-                    fontSize: 26, 
+                    fontSize: 26,
                     color: AppThemes.getMainColor(isDark),
                     fontWeight: FontWeight.bold,
                   ),
@@ -27,7 +27,7 @@ Widget tools() => GetBuilder<ThemeController>(
                   height: 30,
                 ),
                 Text(
-                  'Metronome',
+                  'metronome'.tr,
                   style: TextStyle(
                     fontSize: 22,
                     color: AppThemes.getTextColor(isDark),
@@ -64,7 +64,7 @@ Widget tools() => GetBuilder<ThemeController>(
                   height: 20,
                 ),
                 Text(
-                  'Chords',
+                  'chords'.tr,
                   style: TextStyle(
                     fontSize: 22,
                     color: AppThemes.getTextColor(isDark),

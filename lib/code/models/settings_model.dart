@@ -35,7 +35,7 @@ class SettingsModel {
       'showTutorialTips': showTutorialTips,
       'silenceThreshold': silenceThreshold,
       'firstBeatSound': firstBeatSound,
-      'otherBreatsSound': otherBeatsSound,
+      'otherBeatsSound': otherBeatsSound,
     };
   }
 
@@ -45,7 +45,7 @@ class SettingsModel {
       showTutorialTips: json['showTutorialTips'] ?? true,
       silenceThreshold: json['silenceThreshold'] ?? 0.05,
       firstBeatSound: json['firstBeatSound'] ?? 'claves',
-      otherBeatsSound: json['otherBreatsSound'] ?? 'woodblock_high',
+      otherBeatsSound: json['otherBeatsSound'] ?? json['otherBreatsSound'] ?? 'woodblock_high',
     );
   }
 }

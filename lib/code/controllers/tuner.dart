@@ -387,8 +387,7 @@ class TunerController extends GetxController {
     if (frequency.value >= 30.0 && frequency.value < 41.0) {
       note.value = 'B0';
       tune(30.0);
-    }
-    if (frequency.value >= 41.0 && frequency.value < 55.0) {
+    } else if (frequency.value >= 41.0 && frequency.value < 55.0) {
       note.value = 'E1';
       tune(41.0);
     } else if (frequency.value >= 55.0 && frequency.value < 73.0) {
@@ -412,8 +411,7 @@ class TunerController extends GetxController {
     if (frequency.value >= 30.0 && frequency.value < 41.0) {
       note.value = 'B0';
       tune(30.0);
-    }
-    if (frequency.value >= 41.0 && frequency.value < 55.0) {
+    } else if (frequency.value >= 41.0 && frequency.value < 55.0) {
       note.value = 'E1';
       tune(41.0);
     } else if (frequency.value >= 55.0 && frequency.value < 73.0) {

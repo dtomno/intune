@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
                   isDark ? Icons.light_mode : Icons.dark_mode,
                 ),
                 onPressed: () => _themeController.toggleTheme(),
-                tooltip: isDark ? 'Switch to light mode' : 'Switch to dark mode',
+                tooltip: isDark ? 'switch_to_light_mode'.tr : 'switch_to_dark_mode'.tr,
                 color: AppThemes.getTextColor(isDark),
               ),
               PopupMenuButton(
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Using system theme',
+                          'using_system_theme'.tr,
                           style: TextStyle(
                             color: AppThemes.getTextColor(!isDark),
                           ),
@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         action: SnackBarAction(
-                          label: 'OK',
+                          label: 'ok'.tr,
                           textColor: AppThemes.getTextColor(!isDark),
                           onPressed: () {},
                         ),
@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                         children: [
                           Icon(Icons.settings, color: AppThemes.getTextColor(isDark)),
                           const SizedBox(width: 8),
-                          Text("Settings"),
+                          Text('settings'.tr),
                         ],
                       ),
                     ),
@@ -116,7 +116,7 @@ class _HomeState extends State<Home> {
                         children: [
                           Icon(Icons.info_outline, color: AppThemes.getTextColor(isDark)),
                           const SizedBox(width: 8),
-                          Text("About"),
+                          Text('about'.tr),
                         ],
                       ),
                     ),
@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
                         children: [
                           Icon(Icons.settings_brightness, color: AppThemes.getTextColor(isDark)),
                           const SizedBox(width: 8),
-                          Text("Use system theme"),
+                          Text('use_system_theme'.tr),
                         ],
                       ),
                     ),
@@ -175,7 +175,7 @@ class _HomeState extends State<Home> {
                         color: AppThemes.getMainColor(isDark),
                       ),
                     ),
-                    label: 'Tune',
+                    label: 'tune'.tr,
                   ),
                   // BottomNavigationBarItem(
                   //   icon: const Icon(Icons.music_note),
@@ -205,7 +205,7 @@ class _HomeState extends State<Home> {
                         color: AppThemes.getMainColor(isDark),
                       ),
                     ),
-                    label: 'Tools',
+                    label: 'tools'.tr,
                   ),
                 ]),
           ),

@@ -6,28 +6,84 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 
 class ChordController extends GetxController {
   RxList<String> chordImages = [''].obs;
-  late RxList<dynamic> changingChords;
+  RxList<dynamic> changingChords = <dynamic>[].obs;
   Rx<String> chordName = 'C'.obs;
   Rx<String> chordType = 'Maj'.obs;
   Rx<int> currentIndex = 0.obs;
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
     getImages();
   }
 
-  void getImages() async {
-    var files = await rootBundle.loadString('AssetManifest.json');
-    Map<String, dynamic> images = json.decode(files);
-    List<String> chords = images.keys
-        .where((String key) => key.contains('images/chords/'))
-        .toList();
-    chordImages.value = chords;
-    changingChords = chordImages
-        .where((p0) => p0.contains('images/chords/CMajor'))
-        .toList()
-        .obs;
+  Future<void> getImages() async {
+    try {
+      // print('Loading chord images...');
+      // Use the new AssetManifest.bin approach
+      final manifestContent = await rootBundle.loadString('AssetManifest.json');
+      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+      
+      List<String> chords = manifestMap.keys
+          .where((String key) => key.contains('images/chords/'))
+          .toList();
+      
+      // If that doesn't work, try loading directly from pubspec assets
+      if (chords.isEmpty) {
+        // print('Trying alternative method to load chord images...');
+        // List all possible chord images based on your directory structure
+        chords = await _loadChordImagesDirectly();
+      }
+      
+      // print('Found ${chords.length} chord images');
+      chordImages.value = chords;
+      
+      var cmajorChords = chordImages
+          .where((p0) => p0.contains('images/chords/CMajor'))
+          .toList();
+      // print('Found ${cmajorChords.length} CMajor chords');
+      changingChords.value = cmajorChords;
+      // print('changingChords updated with ${changingChords.length} items');
+    } catch (e) {
+      // print('Error with bin manifest: $e, trying direct load...');
+      try {
+        List<String> chords = await _loadChordImagesDirectly();
+        // print('Found ${chords.length} chord images via direct load');
+        chordImages.value = chords;
+        
+        var cmajorChords = chordImages
+            .where((p0) => p0.contains('images/chords/CMajor'))
+            .toList();
+        // print('Found ${cmajorChords.length} CMajor chords');
+        changingChords.value = cmajorChords;
+      } catch (e2) {
+        // print('Error loading chord images: $e2');
+      }
+    }
+  }
+
+  Future<List<String>> _loadChordImagesDirectly() async {
+    // Define all chord types based on your file structure
+    List<String> notes = ['A', 'Ash', 'B', 'C', 'Csh', 'D', 'Dsh', 'E', 'F', 'Fsh', 'G', 'Gsh'];
+    List<String> types = ['Major', 'minor', 'Maj7', 'min7', '7', '5', 'sus2', 'sus4', 'add9'];
+    List<String> allChords = [];
+    
+    for (var note in notes) {
+      for (var type in types) {
+        // Try to load variations (1) to (6)
+        for (var i = 1; i <= 6; i++) {
+          String path = 'images/chords/$note$type($i).svg';
+          try {
+            await rootBundle.load(path);
+            allChords.add(path);
+          } catch (e) {
+            // Asset doesn't exist, skip
+          }
+        }
+      }
+    }
+    
+    return allChords;
   }
 
   List<DropdownMenuItem<String>> notes = const [
@@ -331,7 +387,7 @@ class ChordController extends GetxController {
         break;
       case 'Emin7':
         changingChords.value = chordImages
-            .where((p0) => p0.contains('images/chords/Emin'))
+            .where((p0) => p0.contains('images/chords/Emin7'))
             .toList();
         break;
       case 'Fmin7':

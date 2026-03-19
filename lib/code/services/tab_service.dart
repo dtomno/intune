@@ -27,7 +27,7 @@ class TabService {
       final file = File(filePath);
       
       // Download the file
-      final response = await _dio.download(
+      await _dio.download(
         song.tabUrl!,
         filePath,
         onReceiveProgress: (received, total) {

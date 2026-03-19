@@ -16,7 +16,7 @@ void main() async {
 
     // Check if file exists
     if (!await File(filePath).exists()) {
-      print('Error: Cannot find pitch_handler.dart at $filePath');
+      // print('Error: Cannot find pitch_handler.dart at $filePath');
       return;
     }
 
@@ -32,8 +32,8 @@ void main() async {
     // Write updated content back to the file
     await File(filePath).writeAsString(modifiedContent);
 
-    print('Successfully updated minimum pitch to 40.0');
+    // print('Successfully updated minimum pitch to 40.0');
   } catch (e) {
-    print('Error: $e');
+    // print('Error: $e');
   }
 }
