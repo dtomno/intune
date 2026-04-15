@@ -117,7 +117,7 @@ class SongDetailView extends StatelessWidget {
                         child: Image.network(
                           song.thumbnailUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, _, __) => Icon(
+                          errorBuilder: (context, _, _) => Icon(
                             Icons.music_note,
                             size: 48,
                             color: AppThemes.getMainColor(isDarkMode),

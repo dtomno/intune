@@ -20,19 +20,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _FeaturePage(
       titleKey: 'welcome_feature_1_title',
       descKey: 'welcome_feature_1_desc',
-      icon: FontAwesomeIcons.guitar,
+      iconWidget: FaIcon(FontAwesomeIcons.guitar, size: 60, color: Colors.white),
       gradient: AppThemes.primaryGradient,
     ),
     _FeaturePage(
       titleKey: 'welcome_feature_2_title',
       descKey: 'welcome_feature_2_desc',
-      icon: Icons.av_timer,
+      iconWidget: Icon(Icons.av_timer, size: 60, color: Colors.white),
       gradient: AppThemes.secondaryGradient,
     ),
     _FeaturePage(
       titleKey: 'welcome_feature_3_title',
       descKey: 'welcome_feature_3_desc',
-      icon: Icons.library_music,
+      iconWidget: Icon(Icons.library_music, size: 60, color: Colors.white),
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -188,13 +188,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 class _FeaturePage {
   final String titleKey;
   final String descKey;
-  final IconData icon;
+  final Widget iconWidget;
   final LinearGradient gradient;
 
   const _FeaturePage({
     required this.titleKey,
     required this.descKey,
-    required this.icon,
+    required this.iconWidget,
     required this.gradient,
   });
 }
@@ -215,6 +215,7 @@ class _FeaturePageWidget extends StatelessWidget {
           Container(
             width: 130,
             height: 130,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               gradient: page.gradient,
               borderRadius: BorderRadius.circular(36),
@@ -226,7 +227,7 @@ class _FeaturePageWidget extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(page.icon, size: 60, color: Colors.white),
+            child: page.iconWidget,
           ),
           const SizedBox(height: 36),
           Text(

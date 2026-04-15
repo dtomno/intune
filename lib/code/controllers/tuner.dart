@@ -80,7 +80,7 @@ class TunerController extends GetxController {
     _audioCapture?.addErrorListener((dynamic msg) => onError(msg));
   }
 
-  showError(String title, String message) {
+  void showError(String title, String message) {
     Get.snackbar(
       title,
       message,
@@ -318,7 +318,7 @@ class TunerController extends GetxController {
     }
   }
 
-  void tune(target) {
+  void tune(double target) {
     frequency.value = target;
     diff.value = (actualFrequency.value - target);
     if (diff.value.abs() <= 1.5) {
@@ -623,7 +623,7 @@ class TunerController extends GetxController {
     }
   }
 
-  void onError(e) {
+  void onError(dynamic e) {
     // print("Error in tuner: $e");
   }
 }

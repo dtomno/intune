@@ -33,7 +33,7 @@ allprojects {
             // Fix for Kotlin JVM target compatibility issues
             project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
                 kotlinOptions {
-                    jvmTarget = "17"
+                    jvmTarget = "21"
                 }
             }
         }
@@ -42,7 +42,7 @@ allprojects {
     // Set kotlin JVM target for all projects
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = "21"
         }
     }
 }

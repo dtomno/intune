@@ -88,19 +88,19 @@ class About extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildSocialButton(
-                          icon: FontAwesomeIcons.github,
+                          icon: const FaIcon(FontAwesomeIcons.github, color: Colors.white, size: 24),
                           url: 'https://github.com/dtomno',
                           isDarkMode: isDarkMode,
                         ),
                         const SizedBox(width: 24),
                         _buildSocialButton(
-                          icon: Icons.email,
+                          icon: const Icon(Icons.email, color: Colors.white, size: 24),
                           url: 'apptests.tomno@gmail.com',
                           isDarkMode: isDarkMode,
                         ),
                         const SizedBox(width: 24),
                         _buildSocialButton(
-                          icon: FontAwesomeIcons.globe,
+                          icon: const FaIcon(FontAwesomeIcons.globe, color: Colors.white, size: 24),
                           url: 'https://dennis-tomno.onrender.com',
                           isDarkMode: isDarkMode,
                         ),
@@ -179,7 +179,7 @@ class About extends StatelessWidget {
   }
   
   Widget _buildSocialButton({
-    required IconData icon,
+    required Widget icon,
     required String url,
     required bool isDarkMode,
   }) {
@@ -213,15 +213,12 @@ class About extends StatelessWidget {
       child: Container(
         width: 50,
         height: 50,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: AppThemes.getMainColor(isDarkMode),
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          icon,
-          color: Colors.white,
-          size: 24,
-        ),
+        child: icon,
       ),
     );
   }

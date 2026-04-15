@@ -8,15 +8,15 @@ plugins {
 android {
     namespace = "com.intune"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"  // Updated to match the plugin requirements
+    ndkVersion = "28.0.12916984"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = JavaVersion.VERSION_21.toString()
     }
 
     defaultConfig {

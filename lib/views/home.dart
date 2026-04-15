@@ -163,14 +163,14 @@ class _HomeState extends State<Home> {
                 },
                 items: [
                   BottomNavigationBarItem(
-                    icon: const Icon(FontAwesomeIcons.guitar),
+                    icon: const FaIcon(FontAwesomeIcons.guitar),
                     activeIcon: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: AppThemes.getMainColor(isDark).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Icon(
+                      child: FaIcon(
                         FontAwesomeIcons.guitar,
                         color: AppThemes.getMainColor(isDark),
                       ),

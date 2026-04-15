@@ -327,7 +327,7 @@ class _SongSearchViewState extends State<SongSearchView> {
                         child: Image.network(
                           song.thumbnailUrl!,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, _, __) => Icon(
+                          errorBuilder: (context, _, _) => Icon(
                             Icons.music_note,
                             size: 32,
                             color: AppThemes.getMainColor(isDarkMode),
