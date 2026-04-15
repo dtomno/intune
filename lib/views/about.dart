@@ -108,7 +108,32 @@ class About extends StatelessWidget {
                     ),
                     
                     const SizedBox(height: 40),
-                    
+
+                    // Privacy Policy
+                    TextButton.icon(
+                      onPressed: () async {
+                        final uri = Uri.parse('https://github.com/dtomno/intune/blob/main/PRIVACY.md');
+                        try {
+                          await launchUrl(uri, mode: LaunchMode.externalApplication);
+                        } catch (e) {
+                          debugPrint('Could not open privacy policy: $e');
+                        }
+                      },
+                      icon: Icon(Icons.privacy_tip_outlined,
+                          size: 16,
+                          color: AppThemes.getTextColor(isDarkMode).withOpacity(0.6)),
+                      label: Text(
+                        'privacy_policy'.tr,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: AppThemes.getTextColor(isDarkMode).withOpacity(0.6),
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
                     // Copyright and attribution
                     Text(
                       'copyright'.trParams({'year': '${DateTime.now().year}'}),

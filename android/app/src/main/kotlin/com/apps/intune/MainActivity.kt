@@ -1,4 +1,4 @@
-package com.intune
+package com.apps.intune
 
 import io.flutter.embedding.android.FlutterActivity
 
